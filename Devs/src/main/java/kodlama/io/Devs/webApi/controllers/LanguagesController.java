@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import kodlama.io.Devs.business.abstracts.LanguageService;
 import kodlama.io.Devs.entities.concretes.Language;
 
@@ -58,7 +58,7 @@ public class LanguagesController {
     //Gelen istekleri Java sınıfları ile eşlemek için @RequestBody kullanılır.
     
     @PostMapping("/")
-    public void add(@RequestBody Language language)
+    public void add( @RequestBody Language language)
     {
     	languageService.add(language);
     }
