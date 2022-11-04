@@ -11,10 +11,10 @@ Programlama dillerini(C#,Java,Python) ekleyebilecek, silebilecek, güncelleyebil
  + İsimler takrar edemez.
  + Programlama dili boş geçilemez.(Validation kullanılmadan algoritmik olarak halledilmiştir.)
 <br> <h4>Projenin şu aşamadaki haline dair bazı  görseller:</h4>
-![image](https://user-images.githubusercontent.com/63293055/200067850-61511f7d-eb26-48ed-be4e-d2b462765f0c.png)
+![image](https://user-images.githubusercontent.com/63293055/200067850-61511f7d-eb26-48ed-be4e-d2b462765f0c.png)<br>
+![image](https://user-images.githubusercontent.com/63293055/200069453-72e19263-c5bb-49bd-a24b-bc83314f0c7b.png)
+![image](https://user-images.githubusercontent.com/63293055/200069356-b212da74-4539-487c-850b-968461fadc66.png) <br><br>
 
-![image](https://user-images.githubusercontent.com/63293055/200068137-b9747c78-a403-4827-ad56-d9b509080e3e.png) <br><br>
-![image](https://user-images.githubusercontent.com/63293055/200068307-dc15e348-5bf5-4ebd-a77f-2609f744b1fc.png)
 
 
 
