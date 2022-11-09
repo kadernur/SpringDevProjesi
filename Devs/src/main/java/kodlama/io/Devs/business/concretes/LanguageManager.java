@@ -1,13 +1,16 @@
 package kodlama.io.Devs.business.concretes;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.RuntimeErrorException;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kodlama.io.Devs.business.abstracts.LanguageService;
+import kodlama.io.Devs.business.requests.LanguageRequest;
+import kodlama.io.Devs.business.responses.LanguageResponse;
 import kodlama.io.Devs.dataAccess.abstracts.LanguageRepository;
 import kodlama.io.Devs.entities.concretes.Language;
 
@@ -24,67 +27,86 @@ public class LanguageManager implements LanguageService {
 	}
 
 	@Override
-	public List<Language> getAll() {
-		return languageRepository.getAll();
+	public List<LanguageResponse> getAll() {
+		
+		List<Language> languages=languageRepository.findAll();
+		List<LanguageResponse> languageResponse=new ArrayList<LanguageResponse>();
+		
+		for(Language language: languages)
+		{
+			LanguageResponse responseItem=new LanguageResponse();
+			responseItem.setId(language.getId());
+			responseItem.setName(language.getName());
+			languageResponse.add(responseItem);
+		}
+		
+		return languageResponse;
+		
 	}
 
 	@Override
-	public void add(Language language) {
+	public void add(LanguageRequest languageRequest) throws Exception {
 		
-		if(checkLanguageNameValid(language))
-		{
-			throw new RuntimeException("programming language cannot be empty");
-		}
+		checkNameValid(languageRequest.getName());
+		Language language=new Language();
+		language.setName(languageRequest.getName());
 		
-		if(isLanguageExist(language))
-		{
-			throw new RuntimeException("This programming language is available, please enter another name.");
-		}
-		
-		languageRepository.add(language);
+		languageRepository.save(language);
 		
 		
 	}
 
 	@Override
 	public void delete(int id) {
-		languageRepository.delete(id);
+		languageRepository.deleteById(id);
 		
 	}
 
 	@Override
-	public void update(Language language, int id) {
-		if(checkLanguageNameValid(language))
-			{
-				throw new RuntimeException("programming language cannot be empty");
-			}
-	
-		if(isLanguageExist(language))
-			{
-				throw new RuntimeException("This programming language is available, please enter another name.");
-			}
-		
-		languageRepository.update(language,id);
-		
+	public void update(LanguageRequest languageRequest, int id) throws Exception {
+		checkNameValid(languageRequest.getName());
+			Language language=languageRepository.findById(id);
+			language.setName(languageRequest.getName());
+			
+			languageRepository.save(language);
 	}
 
 	@Override
 	public Language getById(int id) {
-		return languageRepository.getById(id);
+		return languageRepository.findById(id);
 	}
 
 	
 	//program ismi aynı olamaz
 	//program ismi boş geçilemez
 	//kurallarının kontrolünü bu fonksiyonlar sağlar.
-	
-	public boolean checkLanguageNameValid(Language language)
+	private void checkNameValid(String name) throws Exception
 	{
-		return language.getName().isEmpty() || language.getName().isBlank();
+		Language isExist= languageRepository.findByName(name);
+		if(isExist !=null)
+		{
+			throw new Exception("Bu isim zaten Var!!!");
+		}
+		
+		if(name.isBlank())
+		{
+			throw new Exception("İsim boş Geçilemez!!!");
+		}
+		
 	}
 	
-	public boolean isLanguageExist(Language language)
-	{
-		return languageRepository.getAll().stream().anyMatch(x -> x.getName().equals(language.getName()));
+	
+
+	@Override
+	public LanguageResponse getResponseById(int id) {
+		Language language =languageRepository.findById(id);
+		LanguageResponse languageResponse=new LanguageResponse();
+		languageResponse.setName(language.getName());
+		languageResponse.setId(language.getId());
+		
+		return languageResponse;
 	}
+
+	
+	
 }

@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import kodlama.io.Devs.business.abstracts.LanguageService;
-import kodlama.io.Devs.entities.concretes.Language;
+import kodlama.io.Devs.business.requests.LanguageRequest;
+import kodlama.io.Devs.business.responses.LanguageResponse;
+
 
 @RestController
 @RequestMapping("/api/languages")
@@ -31,7 +33,7 @@ public class LanguagesController {
     
     
     @GetMapping("/getall")
-    public List<Language> getAll()
+    public List<LanguageResponse> getAll()
     {
     	return languageService.getAll();
     }
@@ -44,9 +46,9 @@ public class LanguagesController {
     //@PathVariable ifadesi kullanılır.
     
     @GetMapping("/getbyid/{id}")
-    public Language getById( @PathVariable int id)
+    public LanguageResponse getById( @PathVariable int id)
     {
-    	return languageService.getById(id);
+    	return languageService.getResponseById(id);
     }
     
     
@@ -57,10 +59,10 @@ public class LanguagesController {
     //RequestBody istekle birlikte(POST,PUT vb.) bize gelen veri
     //Gelen istekleri Java sınıfları ile eşlemek için @RequestBody kullanılır.
     
-    @PostMapping("/")
-    public void add( @RequestBody Language language)
+    @PostMapping("/add")
+    public void add( @RequestBody LanguageRequest languageRequest) throws Exception
     {
-    	languageService.add(language);
+    	languageService.add(languageRequest);
     }
     
     @DeleteMapping("/{id}")
@@ -71,9 +73,9 @@ public class LanguagesController {
     
     
     @PutMapping("/{id}")
-    public void update(@RequestBody Language language, @PathVariable int id)
+    public void update(@RequestBody LanguageRequest languageRequest, @PathVariable int id) throws Exception
     {
-    	languageService.update(language, id);
+    	languageService.update(languageRequest, id);
     }
     
     

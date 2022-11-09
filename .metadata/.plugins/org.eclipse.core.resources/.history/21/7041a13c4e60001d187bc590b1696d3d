@@ -1,0 +1,5 @@
+package kodlama.io.Devs.business.responses;
+
+public class LanguageResponse {
+
+}

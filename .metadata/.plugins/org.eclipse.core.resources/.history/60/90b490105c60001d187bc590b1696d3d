@@ -1,0 +1,77 @@
+package kodlama.io.Devs.business.concretes;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import kodlama.io.Devs.business.abstracts.LanguageService;
+import kodlama.io.Devs.business.abstracts.TechnologyService;
+import kodlama.io.Devs.business.requests.TechnologyRequest;
+import kodlama.io.Devs.business.responses.TechnologyResponse;
+import kodlama.io.Devs.dataAccess.abstracts.TechnologyRepository;
+import kodlama.io.Devs.entities.concretes.Technology;
+
+@Service
+public class TechnologyManager implements TechnologyService {
+
+	TechnologyRepository technologyRepository;
+	LanguageService languageService;
+	
+	
+
+	@Autowired  //IOC
+	public TechnologyManager(TechnologyRepository technologyRepository, LanguageService languageService) {
+		
+		this.technologyRepository = technologyRepository;
+		this.languageService = languageService;
+	}
+
+	
+	
+	
+	
+	@Override
+	public List<TechnologyResponse> getAll() {
+		
+		List<Technology> technologies=technologyRepository.findAll();
+		List<TechnologyResponse> technologyResponse=new ArrayList<TechnologyResponse>();
+		
+		for(Technology technology: technologies)
+		{
+			TechnologyResponse responseItem=new TechnologyResponse();
+			responseItem.setId(technology.getId());
+			responseItem.setName(technology.getName());
+			responseItem.setLanguageId(technology.getLanguage().getId());
+			responseItem.setLanguageName(technology.getLanguage().getName());
+			
+			technologyResponse.add(responseItem);
+		}
+	}
+
+	@Override
+	public TechnologyResponse getResponseById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void add(TechnologyRequest technologyRequest) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(TechnologyRequest technologyRequest, int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

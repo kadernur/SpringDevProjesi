@@ -1,0 +1,64 @@
+package kodlama.io.Devs.webApi.controllers;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import kodlama.io.Devs.business.abstracts.TechnologyService;
+import kodlama.io.Devs.business.requests.TechnologyRequest;
+import kodlama.io.Devs.business.responses.TechnologyResponse;
+
+@RestController
+@RequestMapping("api/technologies")
+public class TechnologiesController {
+	
+	private TechnologyService technologyService;
+
+	
+	
+	public TechnologiesController(TechnologyService technologyService) {
+		
+		this.technologyService = technologyService;
+	}
+	
+	
+	@GetMapping("/getall")
+	public List<TechnologyResponse> getAll()
+	{
+		return technologyService.getAll();
+	}
+	
+	
+	@GetMapping("/getById/{id}")
+	public TechnologyResponse getById(@PathVariable int id)
+	{
+		return technologyService.getResponseById(id);
+	}
+	
+	
+	@PostMapping("/add")
+	public void add( TechnologyRequest technologyRequest)
+	{
+		technologyService.add(technologyRequest);
+	}
+	
+	
+	@PutMapping("/update/{id}")
+	public void update(TechnologyRequest technologyRequest, int id)
+	{
+		technologyService.update(technologyRequest, id);
+	}
+	
+	public void delete(int id)
+	{
+		technologyService.delete(id);
+	}
+	
+
+}
