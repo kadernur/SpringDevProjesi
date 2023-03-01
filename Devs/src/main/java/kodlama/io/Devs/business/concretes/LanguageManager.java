@@ -1,55 +1,60 @@
 package kodlama.io.Devs.business.concretes;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kodlama.io.Devs.business.abstracts.LanguageService;
-import kodlama.io.Devs.business.requests.LanguageRequest;
-import kodlama.io.Devs.business.responses.LanguageResponse;
+import kodlama.io.Devs.business.requests.CreateLanguageRequests;
+import kodlama.io.Devs.business.requests.UpdateLanguageRequests;
+import kodlama.io.Devs.business.responses.GetAllLanguagesResponse;
+import kodlama.io.Devs.business.responses.GetByIdLanguagesResponse;
+import kodlama.io.Devs.core.utilities.mappers.ModelMapperService;
 import kodlama.io.Devs.dataAccess.abstracts.LanguageRepository;
 import kodlama.io.Devs.entities.concretes.Language;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class LanguageManager implements LanguageService {
 	
 	LanguageRepository languageRepository;
+	private ModelMapperService modelMapperService;
 	
 	
-    @Autowired //IOC yapısını sağlar.
-	public LanguageManager(LanguageRepository languageRepository) {
-		
-		this.languageRepository = languageRepository;
-	}
+   
 
 	@Override
-	public List<LanguageResponse> getAll() {
+	public List<GetAllLanguagesResponse> getAll() {
 		
 		List<Language> languages=languageRepository.findAll();
-		List<LanguageResponse> languageResponse=new ArrayList<LanguageResponse>();
 		
-		for(Language language: languages)
-		{
-			LanguageResponse responseItem=new LanguageResponse();
-			responseItem.setId(language.getId());
-			responseItem.setName(language.getName());
-			languageResponse.add(responseItem);
-		}
+		//List<LanguageResponse> languageResponse=new ArrayList<LanguageResponse>();
 		
-		return languageResponse;
+		/*
+		 * for(Language language: languages) { LanguageResponse responseItem=new
+		 * LanguageResponse(); responseItem.setId(language.getId());
+		 * responseItem.setName(language.getName()); languageResponse.add(responseItem);
+		 * }
+		 */
+		
+		List<GetAllLanguagesResponse> languagesResponse=languages.stream()
+				.map(language->this.modelMapperService.forResponse().
+						map(language,GetAllLanguagesResponse.class )).collect(Collectors.toList());
+		
+		return languagesResponse;
 		
 	}
 
 	@Override
-	public void add(LanguageRequest languageRequest) throws Exception {
+	public void add(CreateLanguageRequests createlanguageRequest) throws Exception {
 		
-		checkNameValid(languageRequest.getName());
-		Language language=new Language();
-		language.setName(languageRequest.getName());
+		checkNameValid(createlanguageRequest.getName());
+		//Language language=new Language();
+		//language.setName(createlanguageRequest.getName());
+		
+		 Language language= this.modelMapperService.forRequest().map(createlanguageRequest, Language.class);
 		
 		languageRepository.save(language);
 		
@@ -63,18 +68,20 @@ public class LanguageManager implements LanguageService {
 	}
 
 	@Override
-	public void update(LanguageRequest languageRequest, int id) throws Exception {
-		checkNameValid(languageRequest.getName());
-			Language language=languageRepository.findById(id);
-			language.setName(languageRequest.getName());
+	public void update(UpdateLanguageRequests updatelanguageRequest,int id) throws Exception {
+		checkNameValid(updatelanguageRequest.getName());
+		Language language=languageRepository.findById(id);
+		//	language.setName(languageRequest.getName());
 			
-			languageRepository.save(language);
+		language=this.modelMapperService.forRequest().map(updatelanguageRequest, Language.class);
+		
+		this.languageRepository.save(language);
 	}
 
-	@Override
-	public Language getById(int id) {
-		return languageRepository.findById(id);
-	}
+	/*
+	 * @Override public Language getById(int id) { return
+	 * languageRepository.findById(id); }
+	 */
 
 	
 	//program ismi aynı olamaz
@@ -98,13 +105,18 @@ public class LanguageManager implements LanguageService {
 	
 
 	@Override
-	public LanguageResponse getResponseById(int id) {
-		Language language =languageRepository.findById(id);
-		LanguageResponse languageResponse=new LanguageResponse();
-		languageResponse.setName(language.getName());
-		languageResponse.setId(language.getId());
+	public GetByIdLanguagesResponse getById(int id) {
+		Language language = this.languageRepository.findById(id);
+		/*
+		 * LanguageResponse languageResponse=new LanguageResponse();
+		 * languageResponse.setName(language.getName());
+		 * languageResponse.setId(language.getId());
+		 */
 		
-		return languageResponse;
+		
+		GetByIdLanguagesResponse response=this.modelMapperService.forResponse().map(language,GetByIdLanguagesResponse.class);
+		
+		return response;
 	}
 
 	

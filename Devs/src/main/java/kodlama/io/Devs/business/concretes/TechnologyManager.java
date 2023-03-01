@@ -1,93 +1,122 @@
 package kodlama.io.Devs.business.concretes;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kodlama.io.Devs.business.abstracts.LanguageService;
 import kodlama.io.Devs.business.abstracts.TechnologyService;
-import kodlama.io.Devs.business.requests.TechnologyRequest;
-import kodlama.io.Devs.business.responses.TechnologyResponse;
+import kodlama.io.Devs.business.requests.CreateTechnologyRequests;
+import kodlama.io.Devs.business.requests.UpdateTechnologyRequests;
+import kodlama.io.Devs.business.responses.GetAllTechnologiesReponse;
+import kodlama.io.Devs.business.responses.GetByIdTechnologiesResponse;
+import kodlama.io.Devs.core.utilities.mappers.ModelMapperService;
 import kodlama.io.Devs.dataAccess.abstracts.TechnologyRepository;
-import kodlama.io.Devs.entities.concretes.Language;
 import kodlama.io.Devs.entities.concretes.Technology;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class TechnologyManager implements TechnologyService {
 
 	TechnologyRepository technologyRepository;
 	LanguageService languageService;
+	private ModelMapperService modelMapperService;
 	
 	
 
-	@Autowired  //IOC
-	public TechnologyManager(TechnologyRepository technologyRepository, LanguageService languageService) {
-		
-		this.technologyRepository = technologyRepository;
-		this.languageService = languageService;
-	}
-
+//	/*
+//	 * @Autowired //IOC public TechnologyManager(TechnologyRepository
+//	 * technologyRepository, LanguageService languageService) {
+//	 * 
+//	 * this.technologyRepository = technologyRepository; this.languageService =
+//	 * languageService; }
+//	 */
 	
 	
 	
 	
 	@Override
-	public List<TechnologyResponse> getAll() {
+	public List<GetAllTechnologiesReponse> getAll() {
 		
 		List<Technology> technologies=technologyRepository.findAll();
-		List<TechnologyResponse> technologyResponse=new ArrayList<TechnologyResponse>();
+		/*
+		 * List<TechnologyResponse> technologyResponse=new
+		 * ArrayList<TechnologyResponse>();
+		 * 
+		 * for(Technology technology: technologies) { TechnologyResponse
+		 * responseItem=new TechnologyResponse();
+		 * responseItem.setId(technology.getId());
+		 * responseItem.setName(technology.getName());
+		 * responseItem.setLanguageId(technology.getLanguage().getId());
+		 * responseItem.setLanguageName(technology.getLanguage().getName());
+		 * 
+		 * technologyResponse.add(responseItem); }
+		 */
+		List<GetAllTechnologiesReponse> technologiesResponse =technologies.stream().
+				map(brand->this.modelMapperService.forResponse().
+						map(brand,GetAllTechnologiesReponse.class)).collect(Collectors.toList());
 		
-		for(Technology technology: technologies)
-		{
-			TechnologyResponse responseItem=new TechnologyResponse();
-			responseItem.setId(technology.getId());
-			responseItem.setName(technology.getName());
-			responseItem.setLanguageId(technology.getLanguage().getId());
-			responseItem.setLanguageName(technology.getLanguage().getName());
-			
-			technologyResponse.add(responseItem);
-		}
 		
-		return technologyResponse;
+		
+		return technologiesResponse;
 	}
 
 	
 	
 	
 	@Override
-	public TechnologyResponse getResponseById(int id) {
+	public GetByIdTechnologiesResponse getById(int id) {
 		
 		Technology technology=technologyRepository.findById(id);
-		TechnologyResponse technologyResponse=new TechnologyResponse();
-		technologyResponse.setId(technology.getId());
-		technologyResponse.setName(technology.getName());
-		technologyResponse.setLanguageName(technology.getLanguage().getName());
+		/*
+		 * TechnologyResponse technologyResponse=new TechnologyResponse();
+		 * technologyResponse.setId(technology.getId());
+		 * technologyResponse.setName(technology.getName());
+		 * technologyResponse.setLanguageName(technology.getLanguage().getName());
+		 */
 		
-		return technologyResponse;
+		
+        GetByIdTechnologiesResponse response=this.modelMapperService.forResponse().map(technology,GetByIdTechnologiesResponse.class);
+		
+		return response;
 		
 		
-	}
-
-	@Override
-	public void add(TechnologyRequest technologyRequest) {
-		Technology technology=new Technology();
-		Language language=languageService.getById(technologyRequest.getLanguageId());
-		technology.setName(technologyRequest.getName());
-		technology.setLanguage(language);
-		technologyRepository.save(technology);
 		
 		
 	}
 
 	@Override
-	public void update(TechnologyRequest technologyRequest, int id) {
-		Technology technology=technologyRepository.findById(id);
-		Language updateLanguageId =languageService.getById(technologyRequest.getLanguageId());
-		technology.setName(technologyRequest.getName());
-		technology.setLanguage(updateLanguageId);
+	public void add(CreateTechnologyRequests createtechnologyRequest) {
+		//Technology technology=new Technology();
+		//Language language=languageService.getById(createtechnologyRequest.getLanguageId());
+	//technology.setName(technologyRequest.getName());
+		//technology.setLanguage(language);
 		
+    Technology technology =this.modelMapperService.forRequest().map(createtechnologyRequest,Technology.class);
+		
+				
+		
+		this.technologyRepository.save(technology);
+		//technologyRepository.save(technology);
+		
+		
+	}
+
+	@Override
+	public void update(UpdateTechnologyRequests updatetechnologyRequest, int id) {
+		
+		/*
+		 * Technology technology=technologyRepository.findById(id); 
+		 * Language updateLanguageId =languageService.getById(technologyRequest.getLanguageId());
+		 * technology.setName(technologyRequest.getName());
+		 * technology.setLanguage(updateLanguageId);
+		 */
+		
+		
+		
+		Technology technology=this.modelMapperService.forRequest().map(updatetechnologyRequest, Technology.class);
 		technologyRepository.save(technology);
 		
 	}

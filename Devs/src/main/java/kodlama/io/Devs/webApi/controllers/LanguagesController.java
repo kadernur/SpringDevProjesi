@@ -2,38 +2,43 @@ package kodlama.io.Devs.webApi.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.web.bind.annotation.RequestBody;
 import kodlama.io.Devs.business.abstracts.LanguageService;
-import kodlama.io.Devs.business.requests.LanguageRequest;
-import kodlama.io.Devs.business.responses.LanguageResponse;
+import kodlama.io.Devs.business.requests.CreateLanguageRequests;
+import kodlama.io.Devs.business.requests.UpdateLanguageRequests;
+import kodlama.io.Devs.business.responses.GetAllLanguagesResponse;
+import kodlama.io.Devs.business.responses.GetByIdLanguagesResponse;
+import lombok.AllArgsConstructor;
 
 
 @RestController
 @RequestMapping("/api/languages")
+@AllArgsConstructor
 public class LanguagesController {
 	
 	private LanguageService languageService;
 	
 	
-    @Autowired  //IOC
-	public LanguagesController(LanguageService languageService) {
-		
-		this.languageService = languageService;
-	}
+//    @Autowired  //IOC
+//	public LanguagesController(LanguageService languageService) {
+//		
+//		this.languageService = languageService;
+//	}
     
     
     
-    @GetMapping("/getall")
-    public List<LanguageResponse> getAll()
+    @GetMapping("/getAll")
+    public List<GetAllLanguagesResponse> getAll()
     {
     	return languageService.getAll();
     }
@@ -45,10 +50,10 @@ public class LanguagesController {
     //ve değeri almak için 
     //@PathVariable ifadesi kullanılır.
     
-    @GetMapping("/getbyid/{id}")
-    public LanguageResponse getById( @PathVariable int id)
+    @GetMapping("/getbyId/{id}")
+    public GetByIdLanguagesResponse getById( @PathVariable int id)
     {
-    	return languageService.getResponseById(id);
+    	return languageService.getById(id);
     }
     
     
@@ -59,23 +64,24 @@ public class LanguagesController {
     //RequestBody istekle birlikte(POST,PUT vb.) bize gelen veri
     //Gelen istekleri Java sınıfları ile eşlemek için @RequestBody kullanılır.
     
-    @PostMapping("/add")
-    public void add( @RequestBody LanguageRequest languageRequest) throws Exception
+    @PostMapping("/cerate")
+    @ResponseStatus(code=HttpStatus.CREATED)
+    public void add(  CreateLanguageRequests createlanguageRequest) throws Exception
     {
-    	languageService.add(languageRequest);
+    	this.languageService.add(createlanguageRequest);
     }
     
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable int   id)
     {
-    	languageService.delete(id);
+    	this.languageService.delete(id);
     }
     
     
-    @PutMapping("/{id}")
-    public void update(@RequestBody LanguageRequest languageRequest, @PathVariable int id) throws Exception
+    @PutMapping("/update/{id}")
+    public void update(@RequestBody UpdateLanguageRequests updatelanguageRequest, @PathVariable int id) throws Exception
     {
-    	languageService.update(languageRequest, id);
+    	this.languageService.update(updatelanguageRequest, id);
     }
     
     
