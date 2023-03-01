@@ -17,6 +17,21 @@ Programlama dillerini(C#,Java,Python) ekleyebilecek, silebilecek, güncelleyebil
 
 
 
+### :loud_sound::boom: GÜNCELLEME(09.11.2022)
+Req 2 : Sisteme programlama dillerine ait alt teknolojiler eklenebilmeli, silinebilmeli. güncellenebilmeli, listelenebilmelidir.<br>
+Örneğin; Java : Spring, JSP.<br>
+C#: WPF, ASP.NET ,<br>
+JavaScript : Vue, React.<br>
+InMemoryResponse silinerek yerine veritabanı işlemleri eklendi. Hibernate/JPA ile veritabanı tablo ilişkileri kuruldu.<br>
+lombak kurulumu yapılarak projede daha az kod bloğu kullanmak adına kullanıldı.<br>
+![image](https://user-images.githubusercontent.com/63293055/200920764-25601f72-e0f1-4976-a54d-e74eb556bd77.png) <br>
+
+![image](https://user-images.githubusercontent.com/63293055/200920897-f2e74349-e5a9-4e25-a2dc-b3aa49059ad1.png)
+![image](https://user-images.githubusercontent.com/63293055/200920995-16673277-9f1c-4868-9058-b8d3bdb53d46.png)
+![image](https://user-images.githubusercontent.com/63293055/200921109-bed5cc89-0e5c-45f1-8164-be9dd32c8ac0.png)
+
+
+
 
 
 
