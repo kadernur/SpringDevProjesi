@@ -11,6 +11,7 @@ import kodlama.io.Devs.business.requests.CreateTechnologyRequests;
 import kodlama.io.Devs.business.requests.UpdateTechnologyRequests;
 import kodlama.io.Devs.business.responses.GetAllTechnologiesReponse;
 import kodlama.io.Devs.business.responses.GetByIdTechnologiesResponse;
+import kodlama.io.Devs.business.rules.TechnologyBusinessRules;
 import kodlama.io.Devs.core.utilities.mappers.ModelMapperService;
 import kodlama.io.Devs.dataAccess.abstracts.TechnologyRepository;
 import kodlama.io.Devs.entities.concretes.Technology;
@@ -23,6 +24,7 @@ public class TechnologyManager implements TechnologyService {
 	TechnologyRepository technologyRepository;
 	LanguageService languageService;
 	private ModelMapperService modelMapperService;
+	public TechnologyBusinessRules technologyBusinessRules;
 	
 	
 
@@ -93,7 +95,8 @@ public class TechnologyManager implements TechnologyService {
 		//Language language=languageService.getById(createtechnologyRequest.getLanguageId());
 	//technology.setName(technologyRequest.getName());
 		//technology.setLanguage(language);
-		
+	
+	technologyBusinessRules.checkIfTechnologyNameExist(createtechnologyRequest.getName());
     Technology technology =this.modelMapperService.forRequest().map(createtechnologyRequest,Technology.class);
 		
 				
@@ -115,7 +118,7 @@ public class TechnologyManager implements TechnologyService {
 		 */
 		
 		
-		
+		technologyBusinessRules.checkIfTechnologyNameExist(updatetechnologyRequest.getName());
 		Technology technology=this.modelMapperService.forRequest().map(updatetechnologyRequest, Technology.class);
 		technologyRepository.save(technology);
 		

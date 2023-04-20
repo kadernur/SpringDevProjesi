@@ -10,6 +10,7 @@ import kodlama.io.Devs.business.requests.CreateLanguageRequests;
 import kodlama.io.Devs.business.requests.UpdateLanguageRequests;
 import kodlama.io.Devs.business.responses.GetAllLanguagesResponse;
 import kodlama.io.Devs.business.responses.GetByIdLanguagesResponse;
+import kodlama.io.Devs.business.rules.LanguageBusinessRules;
 import kodlama.io.Devs.core.utilities.mappers.ModelMapperService;
 import kodlama.io.Devs.dataAccess.abstracts.LanguageRepository;
 import kodlama.io.Devs.entities.concretes.Language;
@@ -21,6 +22,7 @@ public class LanguageManager implements LanguageService {
 	
 	LanguageRepository languageRepository;
 	private ModelMapperService modelMapperService;
+	private LanguageBusinessRules languageBusinessRules;
 	
 	
    
@@ -48,9 +50,9 @@ public class LanguageManager implements LanguageService {
 	}
 
 	@Override
-	public void add(CreateLanguageRequests createlanguageRequest) throws Exception {
-		
-		checkNameValid(createlanguageRequest.getName());
+	public void add(CreateLanguageRequests createlanguageRequest) {
+		languageBusinessRules.checkIfLanguageNameExists(createlanguageRequest.getName());
+		//checkNameValid(createlanguageRequest.getName());
 		//Language language=new Language();
 		//language.setName(createlanguageRequest.getName());
 		
@@ -69,7 +71,8 @@ public class LanguageManager implements LanguageService {
 
 	@Override
 	public void update(UpdateLanguageRequests updatelanguageRequest,int id) throws Exception {
-		checkNameValid(updatelanguageRequest.getName());
+		//checkNameValid(updatelanguageRequest.getName());
+		languageBusinessRules.checkIfLanguageNameExists(updatelanguageRequest.getName());
 		Language language=languageRepository.findById(id);
 		//	language.setName(languageRequest.getName());
 			
@@ -87,7 +90,7 @@ public class LanguageManager implements LanguageService {
 	//program ismi aynı olamaz
 	//program ismi boş geçilemez
 	//kurallarının kontrolünü bu fonksiyonlar sağlar.
-	private void checkNameValid(String name) throws Exception
+/*	private void checkNameValid(String name) throws Exception
 	{
 		Language isExist= languageRepository.findByName(name);
 		if(isExist !=null)
@@ -101,7 +104,7 @@ public class LanguageManager implements LanguageService {
 		}
 		
 	}
-	
+	*/
 	
 
 	@Override
