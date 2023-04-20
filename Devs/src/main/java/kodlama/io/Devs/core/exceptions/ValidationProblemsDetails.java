@@ -1,8 +1,8 @@
-package kodlama.io.Devs.business.rules;
+package kodlama.io.Devs.core.exceptions;
 
 import java.util.Map;
 
-import kodlama.io.Devs.core.exceptions.ProblemDetails;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

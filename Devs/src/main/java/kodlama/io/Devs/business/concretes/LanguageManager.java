@@ -51,7 +51,7 @@ public class LanguageManager implements LanguageService {
 
 	@Override
 	public void add(CreateLanguageRequests createlanguageRequest) {
-		languageBusinessRules.checkIfLanguageNameExists(createlanguageRequest.getName());
+		this.languageBusinessRules.checkIfLanguageNameExists(createlanguageRequest.getName());
 		//checkNameValid(createlanguageRequest.getName());
 		//Language language=new Language();
 		//language.setName(createlanguageRequest.getName());

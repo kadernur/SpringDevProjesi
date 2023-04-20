@@ -2,12 +2,15 @@ package kodlama.io.Devs.webApi.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,14 +53,14 @@ public class TechnologiesController {
 	
 	@PostMapping("/create/")
 	@ResponseStatus(code=HttpStatus.CREATED)
-	public void add( CreateTechnologyRequests createtechnologyRequest)
+	public void add( @RequestBody @Valid()CreateTechnologyRequests createtechnologyRequest)
 	{
 		technologyService.add(createtechnologyRequest);
 	}
 	
 	
 	@PutMapping("/update/{id}")
-	public void update(UpdateTechnologyRequests updatetechnologyRequest, int id)
+	public void update(  @RequestBody UpdateTechnologyRequests updatetechnologyRequest, int id)
 	{
 		technologyService.update(updatetechnologyRequest, id);
 	}

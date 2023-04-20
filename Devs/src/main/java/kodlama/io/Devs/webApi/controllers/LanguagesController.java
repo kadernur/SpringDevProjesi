@@ -2,6 +2,8 @@ package kodlama.io.Devs.webApi.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,7 +68,7 @@ public class LanguagesController {
     
     @PostMapping("/cerate")
     @ResponseStatus(code=HttpStatus.CREATED)
-    public void add(  CreateLanguageRequests createlanguageRequest) throws Exception
+    public void add(@RequestBody @Valid()  CreateLanguageRequests createlanguageRequest) throws Exception
     {
     	this.languageService.add(createlanguageRequest);
     }
